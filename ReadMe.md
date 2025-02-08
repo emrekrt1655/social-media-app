@@ -39,10 +39,10 @@ In the project directory, you can run the application:
 
 ### `npm run start`
 
-If you see the "Server at listening on port 5000" 
+If you see the "Server at listening on port 8000" 
 The application works correctly..
 
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Start your client to view it in your browser.
 And go to registration page and register to application.
 Please give your real email address to get an activation email.
 After activation you can login to your account
