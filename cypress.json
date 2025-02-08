@@ -1,0 +1,7 @@
+{
+  "defaultCommandTimeOut": 8000,
+  "pageLoadTimeout": 10000,
+  "env": {
+    "url_Backend": "http://localhost:5000/api/"
+  }
+}

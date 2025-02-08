@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId         String      @unique
+  userName       String      @unique
+  name           String
+  surname        String
+  bio            String      @default("Pleasae type sth. about yourself!")
+  email          String      @unique
+  password       String
+  avatar         String      @default("https://www.faydavipegitim.com/media/contents/0ed09-user-profile.jpeg")
+  isTopicCreator String      @default("false")
+  isVerified     String      @default("false")
+  createdAt      DateTime?   @default(now())
+  updatedAt      DateTime?   @updatedAt
+  posts          Post[]
+  topics         Topic[]
+  comments       Comment[]
+  likes          Like[]
+  followers      Follower[]
+  //followings     Following[]
+
+}
+
+model Topic {
+  topicId     String    @unique
+  text        String    @unique
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+  user        User      @relation(fields: [topicUserId], references: [userId], onDelete: Cascade)
+  image       String   @default("https://images.pexels.com/photos/1571673/pexels-photo-1571673.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")
+  category    String    @default("common")
+  isElite    String    @default("true")
+  topicUserId String
+  country     String    @default("Worldwide")
+  posts       Post[]
+}
+
+model Post {
+  postId      String    @unique
+  text        String
+  user        User      @relation(fields: [postUserId], references: [userId], onDelete: Cascade)
+  postUserId  String
+  topic       Topic     @relation(fields: [postTopicId], references: [topicId], onDelete: Cascade)
+  postTopicId String
+  image       String   @default("https://images.pexels.com/photos/1809342/pexels-photo-1809342.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")
+  category    String    @default("common")
+  isElite    String    @default("true")
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+  comments    Comment[]
+  likes       Like[]
+}
+
+model Comment {
+  commentId     String    @unique
+  post          Post      @relation(fields: [commentPostId], references: [postId], onDelete: Cascade)
+  text          String
+  commentPostId String
+  user          User      @relation(fields: [commentUserId], references: [userId], onDelete: Cascade)
+  commentUserId String
+  category    String    @default("common")
+  isElite    String    @default("true")
+  likes         Like[]
+  createdAt     DateTime? @default(now())
+  updatedAt     DateTime? @updatedAt
+
+}
+
+model Like {
+  likeId        String    @unique
+  post          Post?     @relation(fields: [likePostId], references: [postId], onDelete: Cascade)
+  likePostId    String?
+  comment       Comment?  @relation(fields: [likeCommentId], references: [commentId], onDelete: Cascade)
+  likeCommentId String?
+  user          User      @relation(fields: [likeUserId], references: [userId], onDelete: Cascade)
+  likeUserId    String
+  createdAt     DateTime? @default(now())
+  updatedAt     DateTime? @updatedAt
+}
+
+model Follower {
+  folId      String    @unique
+  followerId String
+  follower   User      @relation(fields: [followerId], references: [userId], onDelete: Cascade)
+  followedId String
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+}
+
+// model Following {
+//   followingId String    @unique
+//   followerId  String
+//   following   User      @relation(fields: [followerId], references: [userId], onDelete: Cascade)
+//   followedId  String
+//   createdAt   DateTime? @default(now())
+//   updatedAt   DateTime? @updatedAt
+// }

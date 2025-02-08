@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "sourceMap": true,
+        "strict": true,
+        "outDir": "dist",
+        "lib": ["esnext"],
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "skipLibCheck": true, 
+        "types": ["cypress"],
+    }
+}
