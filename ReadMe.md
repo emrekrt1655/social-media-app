@@ -54,3 +54,5 @@ Than you can open your databese interface to add multiple recordings
 ### `npx prisma studio`
 
 Note: When you register to application, your  password will be hashed and saved to the database. Therefore use hashed password in the prisma studio.
+
+Open [http://localhost:8000/api-docs/#/](http://localhost:8000/api-docs/#/) to view apis.

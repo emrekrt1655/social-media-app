@@ -4,8 +4,9 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import routes from "./routes/index";
 import bodyParser from "body-parser";
-import {createServer} from "http";
-import {Server, Socket} from "socket.io";
+import { createServer } from "http";
+import { Server, Socket } from "socket.io";
+import { setupSwagger } from "./swagger";
 
 const app = express();
 
@@ -17,23 +18,25 @@ app.use(logger("dev"));
 app.use(cookieParser());
 app.use(bodyParser.json());
 
+// Initialize Swagger
+setupSwagger(app);
+
 app.use("/api", routes.authRoutes);
 app.use("/api", routes.topicRoutes);
 app.use("/api", routes.postRoutes);
 app.use("/api", routes.commentRoutes);
-app.use('/api', routes.likeRoutes);
-app.use('/api', routes.followerRoutes);
+app.use("/api", routes.likeRoutes);
+app.use("/api", routes.followerRoutes);
 
 // Socket.io
-const http = createServer(app)
-export const io = new Server(http)
-import { SocketServer } from './config/socket'
+const http = createServer(app);
+export const io = new Server(http);
+import { SocketServer } from "./config/socket";
 
 io.on("connection", (socket: Socket) => {
-  SocketServer(socket)
-})
-
+  SocketServer(socket);
+});
 
 http.listen(PORT, () => {
-  console.log(`Server at listening on port ${PORT}`);
+  console.log(`Server is listening on port ${PORT}`);
 });
