@@ -2,14 +2,24 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
-import { useTopics } from "./lib/hooks/useTopics";
+import { useTopics, useCreateTopic } from "./lib/hooks/useTopics";
 
 function App() {
   const [count, setCount] = useState(0);
   const { topics } = useTopics();
+  const { mutate: createTopic } = useCreateTopic(); // ✅ Now correctly destructuring isLoading
 
-  console.log(topics);
+  const handleCreateTopic = () => {
+    createTopic({
+      "text": "Test Topic",
+      "topicUserId": "user2",
+      "country": "USA",
+      "image": "https://via.placeholder.com/150", // Optional image
+    });
+  };
 
+  //console.log("topics", topics)
+ 
   return (
     <>
       <div>
@@ -24,6 +34,9 @@ function App() {
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
+        </button>
+        <button onClick={handleCreateTopic}  style={{ marginLeft: "10px" }}>
+          { "Create Test Topic"}
         </button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
