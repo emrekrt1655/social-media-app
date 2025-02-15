@@ -1,11 +1,11 @@
 import { API_URL, apiRequest } from "./global/httpRequests";
-import { CreateTopicData, Topic, TopicCreationResponse } from "../types/topics";
+import { CreateTopicData, TopicsResponse, TopicCreationResponse } from "../types/topics";
 
 /**
  * Fetches all topics from the backend.
  * @returns {Promise<Topic[]>}
  */
-export const getTopics = async (): Promise<Topic[]> => {
+export const getTopics = async (): Promise<TopicsResponse> => {
   const url = `${API_URL}/topics`;
 
   try {

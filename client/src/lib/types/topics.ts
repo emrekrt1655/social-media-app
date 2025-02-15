@@ -13,3 +13,9 @@ export type Topic = CreateTopicData & {
   export type TopicCreationResponse = {
     message: string;
   }
+
+  export type TopicsResponse = {
+      status: string,
+      message: string,
+      data: Topic[]
+  }

@@ -1,19 +1,19 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getTopics, createTopic } from "../rest/topicsService";
-import { CreateTopicData, Topic } from "../types/topics";
+import { CreateTopicData, TopicsResponse, Topic } from "../types/topics";
 
 /**
  * Fetches all topics from the backend.
  */
 export function useTopics() {
-  const { data: topics = [], ...queryResult } = useQuery<Topic[]>({
+  const { data, ...queryResult } = useQuery<TopicsResponse>({
     queryKey: ["topics"],
     queryFn: getTopics,
     retry: false,
   });
 
   return {
-    topics,
+    topics: data?.data ? data?.data : [] as Topic[], 
     ...queryResult,
   };
 }

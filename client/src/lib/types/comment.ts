@@ -15,3 +15,9 @@ export type CommentCreationResponse = {
 };
 
 export type CommentDeleteResponse = CommentCreationResponse & {};
+
+export type CommentsResponse = {
+    status: string,
+    message: string,
+    data: Comment[]
+}

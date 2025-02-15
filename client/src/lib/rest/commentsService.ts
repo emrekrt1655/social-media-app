@@ -1,17 +1,17 @@
 import { API_URL, apiRequest } from "./global/httpRequests";
 import type {
   CommentCreateData,
-  Comment,
   CommentCreationResponse,
   CommentDeleteResponse,
+  CommentsResponse,
 } from "../types/comment";
 
 /**
  * Fetches all commments of a Post from the backend.
- * @returns {Promise<Comment[]>}
+ * @returns {Promise<CommentsResponse>}
  */
 
-export const getComments = async (postId: string): Promise<Comment[]> => {
+export const getComments = async (postId: string): Promise<CommentsResponse> => {
   const url = `${API_URL}/comments/${postId}`;
 
   try {
