@@ -1,4 +1,4 @@
-# Lorem Minds Server 
+# Social Media App Server 
 
 Please follow the instructions..
 
@@ -22,7 +22,7 @@ In the project directory, you can create your database:
 
 ### `docker-compose -f docker.compose.yml up -d`
 
-In the project directory, you can generate your database:
+In the project directory, you can generate your database or create anyone you like:
 
 ### `npx prisma generate`
 
@@ -30,22 +30,16 @@ In the project directory, you can init your database:
 
 ### `npx prisma migrate dev --name init`
 
-In the project directory, you can setup your database:
+In the project directory, you can setup and seed your database with samples:
 
 ### `npx prisma db seed`
-
 
 In the project directory, you can run the application:
 
 ### `npm run start`
 
-If you see the "Server at listening on port 8000" 
+If you see the "Server at listening on port ..." 
 The application works correctly..
-
-Start your client to view it in your browser.
-And go to registration page and register to application.
-Please give your real email address to get an activation email.
-After activation you can login to your account
 
 Also you can add data to prisma/seed.ts and run the command to seed database
 
@@ -55,4 +49,19 @@ Than you can open your databese interface to add multiple recordings
 
 Note: When you register to application, your  password will be hashed and saved to the database. Therefore use hashed password in the prisma studio.
 
-Open [http://localhost:8000/api-docs/#/](http://localhost:8000/api-docs/#/) to view apis.
+
+### `Swagger API `
+Open [http://localhost:<port>/api-docs/#/](http://localhost:<port>/api-docs/#/) to view apis.
+
+
+# Social Media App Client
+
+It is located in the client directory.
+
+It is created Vite with React TypeScript template. 
+For the state management, it will be used [TanStack Query](https://tanstack.com/query/latest).
+
+
+Currently react query architecture is under development.
+
+I will share the development phase step by step.
