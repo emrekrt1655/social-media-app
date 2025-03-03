@@ -47,6 +47,7 @@ const authCtrl = {
       //it generates a token for five minutes to activate account
       const activeToken = genActiveToken({ user });
       const url = `${CLIENT_URL}/active/${activeToken}`;
+
       if (validateEmail(email)) {
         sendMail(email, url, "Verify your email address!");
         return res.json({
