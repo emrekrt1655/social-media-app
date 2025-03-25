@@ -129,3 +129,104 @@ export const updateUser = async (
     throw new Error("Failed to update user");
   }
 };
+
+export const deleteUser = async (
+  userId: string
+): Promise<{ message: string }> => {
+  const url = `${API_URL}/userdelete/${userId}`;
+  const token = localStorage.getItem("token") || "";
+  if (!token) {
+    console.error("No token found");
+    return { message: "Token not found" };
+  }
+
+  try {
+    const result = await apiRequest(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Token: `${token}`,
+      },
+    });
+    return result;
+  } catch (error) {
+    console.error("Error  deleteUser:", error);
+    throw new Error("Failed to delete user");
+  }
+};
+
+export const changePassword = async (
+  userId: string,
+  oldPassword: string,
+  password: string
+): Promise<UpdateUserResponse | { message: string }> => {
+  const url = `${API_URL}/changePassword/${userId}`;
+  const token = localStorage.getItem("token") || "";
+  if (!token) {
+    console.error("No token found");
+    return { message: "Token not found" };
+  }
+
+  try {
+    console.log(oldPassword + " changed");
+    const result = await apiRequest(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Token: `${token}`,
+      },
+      body: JSON.stringify({ userId, oldPassword, password }),
+    });
+    return result;
+  } catch (error) {
+    console.error("Error  changePassword:", error);
+    throw new Error("Failed to change password");
+  }
+};
+
+export const forgotPassword = async (
+  email: string
+): Promise<{ message: string }> => {
+  const url = `${API_URL}/forgot_password`;
+  try {
+    const result = await apiRequest(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+    return result;
+  } catch (error: any) {
+    console.error("Error  forgotpassword:", error);
+    throw new Error("Failed to forgot password");
+  }
+};
+
+export const resetPassword = async (
+  password: string
+): Promise<{ message: string }> => {
+  const url = `${API_URL}/reset_password`; // Ensure this URL matches your backend route for reset password
+  const token = localStorage.getItem("token") || "";
+  if (!token) {
+    console.error("No token found");
+    return { message: "Token not found" };
+  }
+
+  try {
+    // check new token
+    const result = await apiRequest(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Token: token,
+      },
+      body: JSON.stringify({ password }),
+    });
+
+    return result;
+  } catch (error: any) {
+    console.error("Error in resetPassword:", error);
+    throw new Error("Failed to reset password");
+  }
+};

@@ -8,14 +8,17 @@ import {
 } from "../types/auth";
 import {
   activeUser,
+  changePassword,
+  deleteUser,
+  forgotPassword,
   getUsers,
   login,
   logout,
   refreshToken,
+  resetPassword,
   signup,
   updateUser,
 } from "../rest/auth";
-
 
 export function useAuth() {
   // Logout Query
@@ -48,7 +51,7 @@ export function useAuth() {
 }
 
 export function useAuthMutation() {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const registerMutation = useMutation({
     mutationFn: async (data: SignupData) => await signup(data),
@@ -98,10 +101,70 @@ export function useAuthMutation() {
     },
   });
 
+  const deleteUserMutation = useMutation({
+    mutationFn: async (userId: string) => {
+      return await deleteUser(userId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+    onError: (error) => {
+      console.error("Error deleting user:", error);
+    },
+  });
+
+  const changeUserMutation = useMutation({
+    mutationFn: async ({
+      userId,
+      oldPassword,
+      password,
+    }: {
+      userId: string;
+      oldPassword: string;
+      password: string;
+    }) => {
+      return await changePassword(userId, oldPassword, password);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+    onError: (error) => {
+      console.error("Error updating user:", error);
+    },
+  });
+
+  const forgotPasswordMutation = useMutation({
+    mutationFn: async (email: string) => {
+      return await forgotPassword(email);
+    },
+    onSuccess: (data) => {
+      console.log("Success:", data.message);
+    },
+    onError: (error: any) => {
+      console.error("Error during forgot password:", error);
+    },
+  });
+
+  const resetPasswordMutation = useMutation({
+    mutationFn: async (password: string) => {
+      return await resetPassword(password);
+    },
+    onSuccess: (data) => {
+      console.log("Success:", data.message);
+    },
+    onError: (error: any) => {
+      console.error("Error during forgot password:", error);
+    },
+  });
+
   return {
     register: registerMutation.mutate,
     active: activeMutation.mutate,
     login: loginMutation.mutate,
     updateUser: updateUserMutation.mutate,
+    deleteUser: deleteUserMutation.mutate,
+    changePassword: changeUserMutation.mutate,
+    forgotPassword: forgotPasswordMutation.mutate,
+    resetPassword: resetPasswordMutation.mutate,
   };
 }
