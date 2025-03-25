@@ -24,6 +24,16 @@ export type RefreshTokenResponse = {
     user: UserData;
 }
 
+export type UserDataResponse = {
+    status: string;
+    message: string;
+    data: UserData[];
+};
+
+export type UpdateUserResponse = UserDataResponse & {
+    data: UserData;
+};
+
 export type UserData = {
     userId: string;
     userName: string;
