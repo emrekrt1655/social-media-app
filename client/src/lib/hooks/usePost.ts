@@ -13,8 +13,8 @@ import { PostCreateData, PostsResponse, Post } from "../types/posts";
 
 export function usePosts(userId?: string) {
     const { data, ...queryResult } = useQuery<PostsResponse>({
-      queryKey: userId ? ["userPosts", userId] : ["posts"], // Dynamically change queryKey
-      queryFn: () => (userId ? getUserPosts(userId) : getPosts()), // Fetch based on userId
+      queryKey: userId ? ["userPosts", userId] : ["posts"],
+      queryFn: () => (userId ? getUserPosts(userId) : getPosts()),
       retry: false,
     });
   
