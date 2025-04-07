@@ -44,3 +44,9 @@ export type UserData = {
     password: string;
     avatar?: string;
 }
+
+export type ChangePasswordData = {
+    userId: string;
+    oldPassword: string;
+    password: string;
+}
