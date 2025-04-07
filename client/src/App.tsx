@@ -1,50 +1,28 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-import { useTopics, useCreateTopic } from "./lib/hooks/useTopics";
+import { Navbar } from "./components/Navbar/Navbar";
+import { BrowserRouter } from "react-router";
+import './App.scss';
 
 function App() {
-  const [count, setCount] = useState(0);
-  const { topics } = useTopics();
-  const { mutate: createTopic } = useCreateTopic(); // ✅ Now correctly destructuring isLoading
-
-  const handleCreateTopic = () => {
-    createTopic({
-      "text": "Test Topic",
-      "topicUserId": "user2",
-      "country": "USA",
-      "image": "https://via.placeholder.com/150", // Optional image
-    });
-  };
-
-  //console.log("topics", topics)
- 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <button onClick={handleCreateTopic}  style={{ marginLeft: "10px" }}>
-          { "Create Test Topic"}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <BrowserRouter>
+      <Navbar
+          user={{
+            userId: "u123456",
+            userName: "devwizard",
+            name: "Alice",
+            surname: "Johnson",
+            bio: "Frontend developer with a love for TypeScript and beautiful UIs.",
+            email: "alice.johnson@example.com",
+            password: "hashedpassword123",
+            avatar: "https://i.pravatar.cc/150?img=47",
+          }}
+          accessToken=""
+        />
+      <main className="page-content">
+</main>
+       
+      </BrowserRouter>
     </>
   );
 }

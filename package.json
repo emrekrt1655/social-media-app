@@ -33,6 +33,7 @@
     "morgan": "^1.10.0",
     "pg": "^8.7.3",
     "prisma": "^3.7.0",
+    "sass-embedded": "^1.86.3",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.3"
