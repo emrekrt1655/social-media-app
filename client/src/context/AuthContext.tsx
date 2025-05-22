@@ -5,7 +5,7 @@ import {
   ReactNode,
   useEffect,
 } from "react";
-import { UserData } from "../lib/types/auth";
+import { AuthUserData } from "../lib/types/auth";
 import {
   getToken,
   getUserFromStorage,
@@ -14,9 +14,9 @@ import {
 
 interface AuthContextType {
   accessToken: string | null;
-  user: UserData | null;
+  user: AuthUserData | null;
   setAccessToken: (token: string | null) => void;
-  setUser: (user: UserData | null) => void;
+  setUser: (user: AuthUserData | null) => void;
   logout: () => void;
 }
 
@@ -24,7 +24,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [user, setUser] = useState<UserData | null>(null);
+  const [user, setUser] = useState<AuthUserData | null>(null);
 
   useEffect(() => {
     const token = getToken();

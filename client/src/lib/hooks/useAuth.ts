@@ -3,8 +3,8 @@ import {
   LoginData,
   RefreshTokenResponse,
   SignupData,
-  UserData,
-  UserDataResponse,
+  AuthUserData,
+  AuthUserDataResponse,
 } from "../types/auth";
 import {
   activeUser,
@@ -42,7 +42,7 @@ export function useAuth() {
   });
 
   // get Users
-  const { data: usersData, ...queryResult } = useQuery<UserDataResponse>({
+  const { data: usersData, ...queryResult } = useQuery<AuthUserDataResponse>({
     queryKey: ["users"],
     queryFn: async () => await getUsers(),
     retry: false,
@@ -86,6 +86,7 @@ export function useAuthMutation() {
       setUserToStorage(data.user)
       setAccessToken(data.access_token);
       setUser(data.user);
+      console.log(data.user)
       navigate("/");
     },
     onError: (error) => {
@@ -99,7 +100,7 @@ export function useAuthMutation() {
       data,
     }: {
       userId: string;
-      data: Partial<UserData>;
+      data: Partial<AuthUserData>;
     }) => {
       return await updateUser(userId, data);
     },

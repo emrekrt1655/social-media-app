@@ -315,6 +315,8 @@ const loginUser = async (user: IUser, password: string, res: Response) => {
   // it creates a new access token
   const refresh_token = genRefreshToken({ id: user.userId });
 
+  const { password: _, ...userWithoutPassword } = user;
+
   res.cookie("refreshtoken", refresh_token, {
     httpOnly: true,
     path: "/api/refresh_token",
@@ -324,8 +326,7 @@ const loginUser = async (user: IUser, password: string, res: Response) => {
   res.json({
     message: "Login successfully completed!",
     access_token,
-    user,
-    // user: { ...user, password: "" },
+    user: userWithoutPassword,
   });
 };
 

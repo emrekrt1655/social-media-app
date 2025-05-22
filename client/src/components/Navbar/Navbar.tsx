@@ -1,13 +1,13 @@
 import React, { useContext, useState } from "react";
 import logo from "../../assets/newLogo.png";
 import { Link } from "react-router-dom";
-import { UserData } from "../../lib/types/auth";
+import { AuthUserData } from "../../lib/types/auth";
 import { useIsMobile } from "../../utils/hooks/useIsMobile";
 import "./navbar.scss";
 import { useAuthContext } from "../../context/AuthContext";
 
 interface NavbarProps {
-  user: UserData | null;
+  user: AuthUserData | null;
   accessToken: string;
 }
 
