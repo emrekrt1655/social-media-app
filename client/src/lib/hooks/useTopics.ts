@@ -8,12 +8,12 @@ import { CreateTopicData, TopicsResponse, Topic } from "../types/topics";
 export function useTopics() {
   const { data, ...queryResult } = useQuery<TopicsResponse>({
     queryKey: ["topics"],
-    queryFn: getTopics,
+    queryFn: () => getTopics,
     retry: false,
   });
 
   return {
-    topics: data?.data ? data?.data : [] as Topic[], 
+    topics: data?.data ? data?.data : ([] as Topic[]),
     ...queryResult,
   };
 }
@@ -25,7 +25,8 @@ export function useCreateTopic() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (newTopic: CreateTopicData) => await createTopic(newTopic),
+    mutationFn: async (newTopic: CreateTopicData) =>
+      await createTopic(newTopic),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["topics"] });
     },
