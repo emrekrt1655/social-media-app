@@ -22,7 +22,7 @@ import {
 
 import { useAuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { saveToken } from "../../utils/localStorage";
+import { saveToken, setUserToStorage } from "../../utils/localStorage";
 
 export function useAuth() {
   // Logout Query
@@ -83,6 +83,7 @@ export function useAuthMutation() {
     mutationFn: async (data: LoginData) => await login(data),
     onSuccess: (data) => {
       saveToken(data.access_token);
+      setUserToStorage(data.user)
       setAccessToken(data.access_token);
       setUser(data.user);
       navigate("/");

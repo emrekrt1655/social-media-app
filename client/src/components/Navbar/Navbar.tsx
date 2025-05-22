@@ -8,32 +8,36 @@ import { useAuthContext } from "../../context/AuthContext";
 
 interface NavbarProps {
   user: UserData | null;
-  accessToken: string
+  accessToken: string;
 }
 
-export const Navbar: React.FC<NavbarProps> = ( {user, accessToken} ) => {
+export const Navbar: React.FC<NavbarProps> = ({ user, accessToken }) => {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
+  console.log(user);
 
-  const {logout} = useAuthContext()
-
+  const { logout } = useAuthContext();
 
   const handleLogout = () => {
-    logout()
+    logout();
   };
 
-  const settings = accessToken
-    ? [
-        { label: "Profile", link: `/${user?.userId}/userProfile` },
-        { label: "Settings", link: `/settings/${user?.userId}` },
-        { label: "Topics", link: "/topics" },
-        { label: "Logout", action: handleLogout },
-      ]
-    : [
-        { label: "About", link: "/about" },
-        { label: "Login", link: "/login" },
-        { label: "Register", link: "/register" },
-      ];
+  const settings =
+    accessToken && user
+      ? [
+          {
+            label: `${user.name}'s Profile`,
+            link: `/${user?.userId}/userProfile`,
+          },
+          { label: "Settings", link: `/settings/${user?.userId}` },
+          { label: "Topics", link: "/topics" },
+          { label: "Logout", action: handleLogout },
+        ]
+      : [
+          { label: "About", link: "/about" },
+          { label: "Login", link: "/login" },
+          { label: "Register", link: "/register" },
+        ];
 
   return (
     <nav className="navbar">

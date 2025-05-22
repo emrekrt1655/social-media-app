@@ -6,7 +6,11 @@ import {
   useEffect,
 } from "react";
 import { UserData } from "../lib/types/auth";
-import { getToken, removeToken } from "../utils/localStorage";
+import {
+  getToken,
+  getUserFromStorage,
+  removeToken,
+} from "../utils/localStorage";
 
 interface AuthContextType {
   accessToken: string | null;
@@ -23,12 +27,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserData | null>(null);
 
   useEffect(() => {
-    const token = getToken()
-    if (token) setAccessToken(token);
+    const token = getToken();
+    const localUserData = getUserFromStorage();
+    if (token && localUserData) {
+      setAccessToken(token);
+      setUser(localUserData);
+    }
   }, []);
 
   const logout = () => {
-    removeToken()
+    removeToken();
     setAccessToken(null);
     setUser(null);
   };
