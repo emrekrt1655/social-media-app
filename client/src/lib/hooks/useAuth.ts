@@ -61,8 +61,8 @@ export function useAuthMutation() {
 
   const registerMutation = useMutation({
     mutationFn: async (data: SignupData) => await register(data),
-    onSuccess: () => {
-      console.log("Register success!");
+    onSuccess: (data) => {
+      console.log(data.message);
     },
     onError: (error) => {
       console.error("Error registering:", error);
@@ -82,7 +82,7 @@ export function useAuthMutation() {
   const loginMutation = useMutation({
     mutationFn: async (data: LoginData) => await login(data),
     onSuccess: (data) => {
-      saveToken(data.access_token)
+      saveToken(data.access_token);
       setAccessToken(data.access_token);
       setUser(data.user);
       navigate("/");

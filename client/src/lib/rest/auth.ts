@@ -18,7 +18,7 @@ export const register = (data: SignupData) =>
 //active user
 
 export const activeUser = (token: string) =>
-  apiRequest<{ message: String }>("/active", "POST", token);
+  apiRequest<{ message: String }>("/active", "POST", { active_token: token });
 
 // login
 
