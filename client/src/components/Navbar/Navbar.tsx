@@ -1,21 +1,25 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import logo from "../../assets/newLogo.png";
 import { Link } from "react-router-dom";
 import { UserData } from "../../lib/types/auth";
-import { useIsMobile } from "../../utils/hooks/useIsMobile"; // adjust the path based on your structure
+import { useIsMobile } from "../../utils/hooks/useIsMobile";
 import "./navbar.scss";
+import { useAuthContext } from "../../context/AuthContext";
 
 interface NavbarProps {
-  accessToken: string;
   user: UserData | null;
+  accessToken: string
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ accessToken, user }) => {
+export const Navbar: React.FC<NavbarProps> = ( {user, accessToken} ) => {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
-  console.log(isMobile, isOpen);
+
+  const {logout} = useAuthContext()
+
+
   const handleLogout = () => {
-    console.log("Logging out...");
+    logout()
   };
 
   const settings = accessToken

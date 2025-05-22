@@ -10,15 +10,19 @@ import {
   activeUser,
   changePassword,
   deleteUser,
-  forgotPassword,
+  forgetPassword,
   getUsers,
   login,
   logout,
   refreshToken,
   resetPassword,
-  signup,
+  register,
   updateUser,
 } from "../rest/auth";
+
+import { useAuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { saveToken } from "../../utils/localStorage";
 
 export function useAuth() {
   // Logout Query
@@ -52,9 +56,11 @@ export function useAuth() {
 
 export function useAuthMutation() {
   const queryClient = useQueryClient();
+  const { setAccessToken, setUser } = useAuthContext();
+  const navigate = useNavigate();
 
   const registerMutation = useMutation({
-    mutationFn: async (data: SignupData) => await signup(data),
+    mutationFn: async (data: SignupData) => await register(data),
     onSuccess: () => {
       console.log("Register success!");
     },
@@ -75,8 +81,11 @@ export function useAuthMutation() {
 
   const loginMutation = useMutation({
     mutationFn: async (data: LoginData) => await login(data),
-    onSuccess: () => {
-      console.log("Login success!");
+    onSuccess: (data) => {
+      saveToken(data.access_token)
+      setAccessToken(data.access_token);
+      setUser(data.user);
+      navigate("/");
     },
     onError: (error) => {
       console.error("Error logging in:", error);
@@ -135,7 +144,7 @@ export function useAuthMutation() {
 
   const forgotPasswordMutation = useMutation({
     mutationFn: async (email: string) => {
-      return await forgotPassword(email);
+      return await forgetPassword(email);
     },
     onSuccess: (data) => {
       console.log("Success:", data.message);
