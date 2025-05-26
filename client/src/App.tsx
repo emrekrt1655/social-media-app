@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Navbar } from "./components/Navbar/Navbar";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
@@ -12,13 +12,9 @@ type Props = {
   user: AuthUserData;
   accessToken: string;
 };
+import "./App.scss";
 
 function AppRoutes({ user, accessToken }: Props) {
-  const location = useLocation();
-  const hideLayout =
-    ["/login", "/register"].includes(location.pathname) ||
-    location.pathname.startsWith("/active");
-
   return (
     <>
       <Navbar user={user} accessToken={accessToken!} />
@@ -40,8 +36,6 @@ function AppRoutes({ user, accessToken }: Props) {
             </MainLayout>
           }
         />
-
-        {/* Layoutsuz sayfalar */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/active/:token" element={<Active />} />
