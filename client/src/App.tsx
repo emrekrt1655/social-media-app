@@ -6,7 +6,7 @@ import Main from "./pages/main/Main";
 import Active from "./pages/active/Active";
 import Topics from "./pages/topics/Topics";
 import { useAuthContext } from "./context/AuthContext";
-import MainLayout from "./layout/layout";
+import MainLayout from "./layout/Layout";
 import { AuthUserData } from "./lib/types/auth";
 type Props = {
   user: AuthUserData;

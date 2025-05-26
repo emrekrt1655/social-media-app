@@ -48,6 +48,15 @@
       background-color: #f4f5d5;
       flex: 1;
       overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+        .bottom-top{
+            height: 60%;
+            background-color: #ffffff;
+        }
+        .bottom-bottom{
+            height: 40%;
+        }
     }
   }
 }

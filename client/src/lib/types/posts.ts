@@ -7,17 +7,19 @@ export type Post = PostCreateData & {
   _count: Count;
 };
 
-export type Count = {
-  comments: number;
-  likes: number;
-};
-
 export type PostCreateData = {
   text: string;
   postUserId: string;
   postTopicId: string;
   image: string;
 };
+
+export type Count = {
+  comments: number;
+  likes: number;
+};
+
+
 
 export type PostCreationResponse = {
   message: string;
