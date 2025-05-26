@@ -1,28 +1,62 @@
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { Navbar } from "./components/Navbar/Navbar";
-import { BrowserRouter, Route, Routes } from "react-router";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
-import "./App.scss";
-import { useAuthContext } from "./context/AuthContext";
 import Main from "./pages/main/Main";
 import Active from "./pages/active/Active";
+import Topics from "./pages/topics/Topics";
+import { useAuthContext } from "./context/AuthContext";
+import MainLayout from "./layout/layout";
+import { AuthUserData } from "./lib/types/auth";
+type Props = {
+  user: AuthUserData;
+  accessToken: string;
+};
+
+function AppRoutes({ user, accessToken }: Props) {
+  const location = useLocation();
+  const hideLayout =
+    ["/login", "/register"].includes(location.pathname) ||
+    location.pathname.startsWith("/active");
+
+  return (
+    <>
+      <Navbar user={user} accessToken={accessToken!} />
+
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <MainLayout>
+              <Main />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/topics"
+          element={
+            <MainLayout>
+              <Topics />
+            </MainLayout>
+          }
+        />
+
+        {/* Layoutsuz sayfalar */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/active/:token" element={<Active />} />
+      </Routes>
+    </>
+  );
+}
 
 function App() {
   const { user, accessToken } = useAuthContext();
+
   return (
-    <>
-      <BrowserRouter>
-        <Navbar user={user} accessToken={accessToken!} />
-        <main className="page-content">
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/active/:token" element={<Active />} />
-          </Routes>
-        </main>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <AppRoutes user={user!} accessToken={accessToken!} />
+    </BrowserRouter>
   );
 }
 
