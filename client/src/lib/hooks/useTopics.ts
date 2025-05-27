@@ -10,8 +10,8 @@ export function useTopics() {
     queryKey: ["topics"],
     queryFn: () => getTopics,
     retry: false,
-    refetchInterval: 30000,
-    refetchIntervalInBackground: true,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 1000 * 60 * 10,
   });
 
   return {
