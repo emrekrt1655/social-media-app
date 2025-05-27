@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import TopicsList from "../components/Sidebar/Right/Topics/Topics";
 import "./Layout.scss";
 import MostLikedPost from "../components/Sidebar/Right/MostLikedPost/MostLikedPost";
+import Footer from "../components/Sidebar/Right/Footer/Footer";
 
 type Props = {
   children: ReactNode;
@@ -22,7 +23,9 @@ function MainLayout({ children }: Props) {
           <section className="bottom-top">
             <MostLikedPost />
           </section>
-          <section className="bottom-bottom"></section>
+          <section className="bottom-bottom">
+            <Footer />
+          </section>
         </section>
       </aside>
     </div>

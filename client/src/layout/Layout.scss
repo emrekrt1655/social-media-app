@@ -45,17 +45,17 @@
     .bottom {
       padding: 0.5rem;
       height: calc(50vh - 35px);
-      background-color: #f4f5d5;
+      //background-color: #f4f5d5;
       flex: 1;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
         .bottom-top{
-            height: 60%;
+            height: 80%;
             background-color: #ffffff;
         }
         .bottom-bottom{
-            height: 40%;
+            height: 20%;
         }
     }
   }
