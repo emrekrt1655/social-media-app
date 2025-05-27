@@ -2,13 +2,14 @@ import "./Main.scss";
 import { usePosts } from "../../lib/hooks/usePost";
 import { Post } from "../../lib/types/posts";
 import { useState } from "react";
+import PostCard from "../../components/PostCard/PostCard";
 
 const Main = () => {
   const { posts } = usePosts();
   const [activeTab, setActiveTab] = useState<"foryou" | "followings">("foryou");
 
   return (
-<>
+    <>
       <div className="main-toggle">
         <button
           className={`toggle-btn ${activeTab === "foryou" ? "active" : ""}`}
@@ -23,14 +24,9 @@ const Main = () => {
           Followings
         </button>
       </div>
-
-      <ul className="post-list">
-        {posts.map((post: Post) => (
-          <li key={post.postId} className="post-item">
-            {post.text}
-          </li>
-        ))}
-      </ul>
+      {posts?.map((post: Post) => (
+          <PostCard post={post} />
+      ))}
     </>
   );
 };
