@@ -1,0 +1,30 @@
+
+.toggle-tabs {
+  display: flex;
+  margin-bottom: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+
+  .toggle-btn {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background-color: #f9f9f9;
+    border: none;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &.active {
+      background-color: #0070f3;
+      color: #fff;
+    }
+
+    &:hover:not(.active) {
+      background-color: #eaeaea;
+    }
+  }
+}

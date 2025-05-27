@@ -14,6 +14,7 @@ type Props = {
 };
 import "./App.scss";
 import TopicPosts from "./pages/posts/TopicPosts";
+import UserProfile from "./pages/userProfile/UserProfile";
 
 function AppRoutes({ user, accessToken }: Props) {
   return (
@@ -37,11 +38,19 @@ function AppRoutes({ user, accessToken }: Props) {
             </MainLayout>
           }
         />
-         <Route
+        <Route
           path="/topic/:topicId"
           element={
             <MainLayout>
               <TopicPosts />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/profile/:userId/:userName"
+          element={
+            <MainLayout>
+              <UserProfile />
             </MainLayout>
           }
         />
