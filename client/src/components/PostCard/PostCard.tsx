@@ -4,26 +4,43 @@ import "./PostCard.scss";
 import { AuthUserData } from "../../lib/types/auth";
 import { formatPostDate } from "../../utils/formatPostDate";
 import { useNavigate } from "react-router";
+import { Topic } from "../../lib/types/topics";
 
 type PostCardProps = {
   post: Post;
   postUser: AuthUserData;
+  topic: Topic;
 };
 
-const PostCard: React.FC<PostCardProps> = ({ post, postUser }) => {
+const PostCard: React.FC<PostCardProps> = ({ post, postUser, topic }) => {
   const navigate = useNavigate();
-    const handleAvatarClick = (
+
+  const handleAvatarClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    e.stopPropagation();
+    e.stopPropagation(); // post click'i engelle
     navigate(`/profile/${postUser.userId}/${postUser.userName}`);
   };
+
+  const handleTopicClick = (e: React.MouseEvent<HTMLParagraphElement, MouseEvent>) => {
+    e.stopPropagation(); // post click'i engelle
+    if (topic) {
+      navigate(`/topic/${topic.topicId}`);
+    }
+  };
+
   return (
     <div className="post-card" onClick={() => navigate(`/post/${post.postId}`)}>
       <div className="post-card__content">
         <div className="post-card__left">
           <div className="post-card__header">
-            <p className="post-card__category">{post.category}</p>
+            <p
+              className="post-card__category"
+              style={{ cursor: topic ? "pointer" : "default" }}
+              onClick={handleTopicClick}
+            >
+              {(topic.text).length > 15 ? (topic.text.slice(0,15)) + "..." : (topic.text)} / {topic.category}
+            </p>
             {postUser.avatar ? (
               <div
                 className="post-card__avatar-wrapper"
@@ -42,6 +59,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, postUser }) => {
               <span>No Avatar</span>
             )}
           </div>
+
           <p className="post-card__text">{post.text}</p>
 
           <div className="post-card__footer">

@@ -13,6 +13,7 @@ type Props = {
   accessToken: string;
 };
 import "./App.scss";
+import TopicPosts from "./pages/posts/TopicPosts";
 
 function AppRoutes({ user, accessToken }: Props) {
   return (
@@ -33,6 +34,14 @@ function AppRoutes({ user, accessToken }: Props) {
           element={
             <MainLayout>
               <Topics />
+            </MainLayout>
+          }
+        />
+         <Route
+          path="/topic/:topicId"
+          element={
+            <MainLayout>
+              <TopicPosts />
             </MainLayout>
           }
         />
