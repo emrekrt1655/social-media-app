@@ -4,124 +4,120 @@ import bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 async function seed() {
-  // Create users
-  const user1 = await prisma.user.create({
-    data: {
-      userId: 'user1',
-      userName: 'user1',
-      email: 'user1@example.com',
-      password: await bcrypt.hash('password1', 12), // Hash the password using bcrypt
-      name: 'User 1',
-      surname: 'Lastname',
-    },
-  });
+    await prisma.like.deleteMany();
+  await prisma.comment.deleteMany();
+  await prisma.post.deleteMany();
+  await prisma.topic.deleteMany();
+  await prisma.follower.deleteMany();
+  await prisma.user.deleteMany();
+  const userCount = 10;
+  const topicsPerUser = 5;
+  const postsPerTopic = 10;
 
-  const user2 = await prisma.user.create({
-    data: {
-      userId: 'user2',
-      userName: 'user2',
-      email: 'user2@example.com',
-      password: await bcrypt.hash('password2', 12), // Hash the password using bcrypt
-      name: 'User 2',
-      surname: 'Lastname',
-    },
-  });
-  // Create topics
-  const topic1 = await prisma.topic.create({
-    data: {
-      topicId: 'topic1',
-      text: 'Topic 1',
-      topicUserId: user1.userId,
-    },
-  });
+  const users = [];
 
-  const topic2 = await prisma.topic.create({
-    data: {
-      topicId: 'topic2',
-      text: 'Topic 2',
-      topicUserId: user2.userId,
-    },
-  });
+  // USERS
+  for (let i = 1; i <= userCount; i++) {
+    const user = await prisma.user.create({
+      data: {
+        userId: `user${i}`,
+        userName: `user${i}`,
+        email: `user${i}@example.com`,
+        password: await bcrypt.hash(`password${i}`, 10),
+        name: `Name${i}`,
+        surname: `Surname${i}`,
+      },
+    });
+    users.push(user);
+  }
 
-  // Create posts
-  const post1 = await prisma.post.create({
-    data: {
-      postId: 'post1',
-      text: 'Post 1',
-      postUserId: user1.userId,
-      postTopicId: topic1.topicId,
-    },
-  });
+  const topics = [];
 
-  const post2 = await prisma.post.create({
-    data: {
-      postId: 'post2',
-      text: 'Post 2',
-      postUserId: user2.userId,
-      postTopicId: topic2.topicId,
-    },
-  });
+  // TOPICS
+  for (const user of users) {
+    for (let t = 1; t <= topicsPerUser; t++) {
+      const topic = await prisma.topic.create({
+        data: {
+          topicId: `${user.userId}-topic${t}`,
+          text: `Interesting Topic ${t} by ${user.userName}`,
+          topicUserId: user.userId,
+        },
+      });
+      topics.push(topic);
+    }
+  }
 
-  // Create comments
-  const comment1 = await prisma.comment.create({
-    data: {
-      commentId: 'comment1',
-      text: 'Comment 1',
-      commentPostId: post1.postId,
-      commentUserId: user1.userId,
-    },
-  });
+  const posts = [];
 
-  const comment2 = await prisma.comment.create({
-    data: {
-      commentId: 'comment2',
-      text: 'Comment 2',
-      commentPostId: post2.postId,
-      commentUserId: user2.userId,
-    },
-  });
+  // POSTS
+  for (const topic of topics) {
+    const topicOwner = users.find((u) => u.userId === topic.topicUserId);
+    for (let p = 1; p <= postsPerTopic; p++) {
+      const post = await prisma.post.create({
+        data: {
+          postId: `${topic.topicId}-post${p}`,
+          text: `This is post ${p} in ${topic.text}`,
+          postUserId: topicOwner!.userId,
+          postTopicId: topic.topicId,
+          image: "",
+        },
+      });
+      posts.push(post);
+    }
+  }
 
-  // Create likes
-  const like1 = await prisma.like.create({
-    data: {
-      likeId: 'like1',
-      likePostId: post1.postId,
-      likeUserId: user2.userId,
-    },
-  });
+  const comments = [];
+  const likes = [];
 
-  const like2 = await prisma.like.create({
-    data: {
-      likeId: 'like2',
-      likeCommentId: comment2.commentId,
-      likeUserId: user1.userId,
-    },
-  });
+  // COMMENTS & LIKES
+  for (const post of posts) {
+    // Yorum yazan random user seç
+    const randomCommentUser = users[Math.floor(Math.random() * users.length)];
+    const comment = await prisma.comment.create({
+      data: {
+        commentId: `comment-${post.postId}`,
+        text: `Comment on ${post.text}`,
+        commentPostId: post.postId,
+        commentUserId: randomCommentUser.userId,
+      },
+    });
+    comments.push(comment);
 
-  // Create followers
-  const follower1 = await prisma.follower.create({
-    data: {
-      folId: 'follower1',
-      followerId: user1.userId,
-      followedId: user2.userId,
-    },
-  });
+    // Like atan random user seç
+    const randomLikeUser = users[Math.floor(Math.random() * users.length)];
+    const like = await prisma.like.create({
+      data: {
+        likeId: `like-${post.postId}`,
+        likePostId: post.postId,
+        likeUserId: randomLikeUser.userId,
+      },
+    });
+    likes.push(like);
+  }
 
-  const follower2 = await prisma.follower.create({
-    data: {
-      folId: 'follower2',
-      followerId: user2.userId,
-      followedId: user1.userId,
-    },
-  });
+  // FOLLOWERS
+  for (const follower of users) {
+    const otherUsers = users.filter((u) => u.userId !== follower.userId);
+    const followingSample = otherUsers.slice(0, 3); // Herkes 3 kişiyi takip etsin
 
-  console.log('Seed data created successfully!');
+    for (const followed of followingSample) {
+      await prisma.follower.create({
+        data: {
+          folId: `f-${follower.userId}-${followed.userId}`,
+          followerId: follower.userId,
+          followedId: followed.userId,
+        },
+      });
+    }
+  }
+
+  console.log("Seed completed successfully!");
 }
 
-seed().catch((error) => {
-  console.error(error);
-}).finally(() => {
-  prisma.$disconnect();
-});
-
-
+seed()
+  .catch((e) => {
+    console.error("Error during seeding:", e);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
