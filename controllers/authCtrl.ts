@@ -315,6 +315,7 @@ const loginUser = async (user: IUser, password: string, res: Response) => {
   // it creates a new access token
   const refresh_token = genRefreshToken({ id: user.userId });
 
+  //TODO : Still send password to the frontend
   const { password: _, ...userWithoutPassword } = user;
 
   res.cookie("refreshtoken", refresh_token, {
