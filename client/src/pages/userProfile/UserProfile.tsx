@@ -8,6 +8,7 @@ import { useTopics } from "../../lib/hooks/useTopics";
 import { Topic } from "../../lib/types/topics";
 import ToggleTabs from "../../components/ToggleTabs/ToggleTabs";
 import { useState } from "react";
+import TopicCard from "../../components/TopicCard/TopicCard";
 
 const UserProfile = () => {
   const { posts } = usePosts();
@@ -23,11 +24,15 @@ const UserProfile = () => {
     }, {} as Record<string, AuthUserData>) || {};
 
   const userPosts = posts.filter((post: Post) => userId === post.postUserId);
+  const userTopics = topics.filter(
+    (topic: Topic) => userId === topic.topicUserId
+  );
   const topicMap =
     topics?.reduce((acc, topic) => {
       acc[topic.topicId] = topic;
       return acc;
     }, {} as Record<string, Topic>) || {};
+
   return (
     <>
       <ToggleTabs
@@ -38,13 +43,17 @@ const UserProfile = () => {
         active={activeTab}
         onChange={(val) => setActiveTab(val)}
       />
-      {userPosts?.map((post: Post) => (
-        <PostCard
-          post={post}
-          postUser={userMap[post.postUserId]}
-          topic={topicMap[post.postTopicId]}
-        />
-      ))}
+      {activeTab === "posts"
+        ? userPosts?.map((post: Post) => (
+            <PostCard
+              post={post}
+              postUser={userMap[post.postUserId]}
+              topic={topicMap[post.postTopicId]}
+            />
+          ))
+        : userTopics?.map((topic: Topic) => (
+            <TopicCard topic={topic} topicUser={userMap[topic.topicUserId]} />
+          ))}
     </>
   );
 };
