@@ -5,6 +5,7 @@ import { AuthUserData } from "../../lib/types/auth";
 import { formatPostDate } from "../../utils/formatPostDate";
 import { useNavigate } from "react-router";
 import { Topic } from "../../lib/types/topics";
+import AvatarCard from "../Avatar/AvatarCard";
 
 type PostCardProps = {
   post: Post;
@@ -15,14 +16,9 @@ type PostCardProps = {
 const PostCard: React.FC<PostCardProps> = ({ post, postUser, topic }) => {
   const navigate = useNavigate();
 
-  const handleAvatarClick = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  const handleTopicClick = (
+    e: React.MouseEvent<HTMLParagraphElement, MouseEvent>
   ) => {
-    e.stopPropagation(); // post click'i engelle
-    navigate(`/profile/${postUser.userId}/${postUser.userName}`);
-  };
-
-  const handleTopicClick = (e: React.MouseEvent<HTMLParagraphElement, MouseEvent>) => {
     e.stopPropagation(); // post click'i engelle
     if (topic) {
       navigate(`/topic/${topic.topicId}`);
@@ -39,25 +35,13 @@ const PostCard: React.FC<PostCardProps> = ({ post, postUser, topic }) => {
               style={{ cursor: topic ? "pointer" : "default" }}
               onClick={handleTopicClick}
             >
-              {(topic.text).length > 15 ? (topic.text.slice(0,15)) + "..." : (topic.text)} / {topic.category}
+              {topic.text.length > 15
+                ? topic.text.slice(0, 15) + "..."
+                : topic.text}{" "}
+              / {topic.category}
             </p>
-            {postUser.avatar ? (
-              <div
-                className="post-card__avatar-wrapper"
-                onClick={handleAvatarClick}
-              >
-                <img
-                  src={postUser.avatar}
-                  alt={`${postUser.name} avatar`}
-                  className="post-card__avatar"
-                />
-                <span className="post-card__username-tooltip">
-                  @{postUser.userName}
-                </span>
-              </div>
-            ) : (
-              <span>No Avatar</span>
-            )}
+
+            <AvatarCard user={postUser} />
           </div>
 
           <p className="post-card__text">{post.text}</p>

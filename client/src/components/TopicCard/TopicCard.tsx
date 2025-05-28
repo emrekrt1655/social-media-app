@@ -1,5 +1,6 @@
 import { AuthUserData } from "../../lib/types/auth";
 import { Topic } from "../../lib/types/topics";
+import AvatarCard from "../Avatar/AvatarCard";
 import "./TopicCard.scss";
 import { useNavigate } from "react-router";
 
@@ -11,13 +12,6 @@ type TopicCardProps = {
 const TopicCard: React.FC<TopicCardProps> = ({ topic, topicUser }) => {
   const navigate = useNavigate();
 
-  const handleAvatarClick = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    e.stopPropagation();
-    navigate(`/profile/${topicUser.userId}/${topicUser.userName}`);
-  };
-
   const handleCardClick = () => {
     navigate(`/topic/${topic.topicId}`);
   };
@@ -28,17 +22,7 @@ const TopicCard: React.FC<TopicCardProps> = ({ topic, topicUser }) => {
         <div className="topic-card__left">
           <div className="topic-card__header">
             <p className="topic-card__title">{topic.text}</p>
-
-            <div className="topic-card__avatar-wrapper" onClick={handleAvatarClick}>
-              <img
-                src={topicUser.avatar}
-                alt={topicUser.name}
-                className="topic-card__avatar"
-              />
-              <span className="topic-card__username-tooltip">
-                @{topicUser.userName}
-              </span>
-            </div>
+            <AvatarCard user={topicUser} />
           </div>
 
           <p className="topic-card__meta">{topic.country}</p>

@@ -19,7 +19,7 @@ function Topics() {
       <h2 className="topics-title">All Topics</h2>
       <div className="topics-container">
         {topics.map((topic) => (
-          <TopicCard topic={topic} topicUser={userMap[topic.topicUserId]} />
+          <TopicCard key={topic.topicId} topic={topic} topicUser={userMap[topic.topicUserId]} />
         ))}
       </div>
     </div>

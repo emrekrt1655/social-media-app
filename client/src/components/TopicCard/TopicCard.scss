@@ -32,45 +32,6 @@
     margin-bottom: 8px;
   }
 
-  &__avatar-wrapper {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-
-    &:hover .topic-card__username-tooltip {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-  }
-
-  &__avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-left: 8px;
-    cursor: pointer;
-  }
-
-  &__username-tooltip {
-    position: absolute;
-    bottom: 110%;
-    left: 50%;
-    transform: translateX(-50%) translateY(10px);
-    background-color: rgba(0, 0, 0, 0.75);
-    color: #fff;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    white-space: nowrap;
-    pointer-events: none;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    z-index: 10;
-  }
-
   &__title {
     font-size: 1.1rem;
     font-weight: bold;
