@@ -3,6 +3,7 @@ import TopicsList from "../components/Sidebar/Right/Topics/Topics";
 import "./Layout.scss";
 import MostLikedPost from "../components/Sidebar/Right/MostLikedPost/MostLikedPost";
 import Footer from "../components/Sidebar/Right/Footer/Footer";
+import ProfileCard from "../components/Sidebar/Left/ProfileCard/ProfileCard";
 
 type Props = {
   children: ReactNode;
@@ -11,7 +12,12 @@ type Props = {
 function MainLayout({ children }: Props) {
   return (
     <div className="main-container">
-      <aside className="sidebar-left">Sidebar left</aside>
+      <aside className="sidebar-left">
+        <section className="top">
+          <ProfileCard />{" "}
+        </section>
+        <section className="bottom">bottom</section>
+      </aside>
 
       <main className="page-content">{children}</main>
 

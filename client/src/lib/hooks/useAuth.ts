@@ -86,7 +86,6 @@ export function useAuthMutation() {
       setUserToStorage(data.user)
       setAccessToken(data.access_token);
       setUser(data.user);
-      console.log(data.user)
       navigate("/");
     },
     onError: (error) => {

@@ -5,6 +5,7 @@ import { AuthUserData } from "../../lib/types/auth";
 import { useIsMobile } from "../../utils/hooks/useIsMobile";
 import "./navbar.scss";
 import { useAuthContext } from "../../context/AuthContext";
+import AvatarCard from "../Avatar/AvatarCard";
 
 interface NavbarProps {
   user: AuthUserData | null;
@@ -14,7 +15,6 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ user, accessToken }) => {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
-  console.log(user);
 
   const { logout } = useAuthContext();
 
@@ -63,7 +63,7 @@ export const Navbar: React.FC<NavbarProps> = ({ user, accessToken }) => {
           item.link ? (
             <li key={index}>
               <Link to={item.link} onClick={() => setIsOpen(false)}>
-                {item.label}
+                {item.label.includes("Profile") ? <AvatarCard user={user!} /> : item.label}
               </Link>
             </li>
           ) : (
