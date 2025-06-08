@@ -1,11 +1,10 @@
 .most-liked-post {
   cursor: pointer;
-  padding: 1rem;
+  padding: 0.5rem;
 
   .title {
     font-size: 1.2rem;
     font-weight: 700;
-    margin-bottom: 1rem;
     color: #333;
   }
 
@@ -13,7 +12,7 @@
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 12px;
-    padding: 1rem;
+    padding: 0.5rem;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     transition: box-shadow 0.2s ease;
 
@@ -23,7 +22,7 @@
 
     .image-wrapper {
       width: 100%;
-      height: 180px;
+      height: 100px;
       overflow: hidden;
       border-radius: 8px;
       margin-bottom: 1rem;
