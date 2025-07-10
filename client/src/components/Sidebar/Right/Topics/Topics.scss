@@ -102,12 +102,15 @@
   }
 
   .topics-footer {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
     margin-top: auto;
     margin-bottom: 1rem;
     padding-top: 1rem;
     text-align: center;
 
-    .all-topics-button {
+    .topics-button {
       padding: 10px 20px;
       font-size: 1rem;
       border: none;

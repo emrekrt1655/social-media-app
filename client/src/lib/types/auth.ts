@@ -43,6 +43,8 @@ export type AuthUserData = {
   email: string;
   avatar?: string;
   password?: string;
+  isTopicCreator?: string;
+  isVerified?: string;
 };
 
 export type ChangePasswordData = {

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import logo from "../../assets/newLogo.png";
 import { Link } from "react-router-dom";
 import { AuthUserData } from "../../lib/types/auth";
@@ -27,7 +27,7 @@ export const Navbar: React.FC<NavbarProps> = ({ user, accessToken }) => {
       ? [
           {
             label: `${user.name}'s Profile`,
-            link: `/${user?.userId}/userProfile`,
+            link: `/profile/${user?.userId}/userProfile`,
           },
           { label: "Settings", link: `/settings/${user?.userId}` },
           { label: "Topics", link: "/topics" },
@@ -63,7 +63,11 @@ export const Navbar: React.FC<NavbarProps> = ({ user, accessToken }) => {
           item.link ? (
             <li key={index}>
               <Link to={item.link} onClick={() => setIsOpen(false)}>
-                {item.label.includes("Profile") ? <AvatarCard user={user!} /> : item.label}
+                {item.label.includes("Profile") ? (
+                  <AvatarCard user={user!} />
+                ) : (
+                  item.label
+                )}
               </Link>
             </li>
           ) : (

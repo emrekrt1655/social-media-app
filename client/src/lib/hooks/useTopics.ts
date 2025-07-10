@@ -25,7 +25,6 @@ export function useTopics() {
  */
 export function useCreateTopic() {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: async (newTopic: CreateTopicData) =>
       await createTopic(newTopic),

@@ -1,0 +1,49 @@
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+  .modal {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    width: 450px;
+    max-width: 90%;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+
+    .modal-content {
+      margin-top: 1rem;
+
+      input,
+      textarea {
+        width: 100%;
+        margin-top: 10px;
+        padding: 8px;
+        font-size: 14px;
+      }
+    }
+    .modal-buttons {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 1.5rem;
+
+      button {
+        padding: 6px 12px;
+        margin-left: 10px;
+      }
+
+      .cancel-button {
+        background: #eee;
+      }
+
+      .submit-button {
+        background: #007bff;
+        color: white;
+      }
+    }
+  }
+}
