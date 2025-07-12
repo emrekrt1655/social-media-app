@@ -11,6 +11,33 @@
     color: #222;
   }
 
+  .topics-sorting {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+
+    label {
+      font-weight: 500;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    select {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: white;
+      cursor: pointer;
+      color: #333;
+
+      &:hover {
+        border-color: #999;
+      }
+    }
+  }
+
   .topics-container {
     list-style: none;
     padding: 0;
@@ -19,5 +46,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 1rem;
   }
 }

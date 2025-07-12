@@ -22,7 +22,7 @@ const Topics = () => {
   const [isCountrySelectFocused, setIsCountrySelectFocused] = useState(false);
   const [newTopic, setNewTopic] = useState({
     text: "",
-    country: "Worldwide",
+    country: "",
     image: "https://via.placeholder.com/150",
     topicUserId: user?.userId ?? "",
   });
