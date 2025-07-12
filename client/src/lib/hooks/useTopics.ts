@@ -8,7 +8,7 @@ import { CreateTopicData, TopicsResponse, Topic } from "../types/topics";
 export function useTopics() {
   const { data, ...queryResult } = useQuery<TopicsResponse>({
     queryKey: ["topics"],
-    queryFn: () => getTopics,
+    queryFn: getTopics,
     retry: false,
     staleTime: 5 * 60 * 1000,
     gcTime: 1000 * 60 * 10,

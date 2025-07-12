@@ -6,9 +6,10 @@ import "./topics.scss";
 import { getUserFromStorage } from "../../../../utils/localStorage";
 import { AuthUserData } from "../../../../lib/types/auth";
 import Modal from "../../../Modal/Modal";
+import { countries as fiftyCountries } from "../../../../utils/constants/country";
 
 const Topics = () => {
-  const { topics } = useTopics();
+  const { topics, refetch } = useTopics();
   const createTopic = useCreateTopic();
   const navigate = useNavigate();
   const user: AuthUserData = getUserFromStorage();
@@ -18,6 +19,7 @@ const Topics = () => {
   const [search, setSearch] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCountrySelectFocused, setIsCountrySelectFocused] = useState(false);
   const [newTopic, setNewTopic] = useState({
     text: "",
     country: "Worldwide",
@@ -93,9 +95,16 @@ const Topics = () => {
           image: "https://via.placeholder.com/150",
           topicUserId: user.userId,
         });
+        refetch();
       },
     });
   };
+
+  const filteredCountryOptions = useMemo(() => {
+    return fiftyCountries.filter((c) =>
+      c.name.toLowerCase().includes(newTopic.country.toLowerCase())
+    );
+  }, [newTopic.country]);
 
   return (
     <>
@@ -112,6 +121,23 @@ const Topics = () => {
               onFocus={() => setIsFocused(true)}
               onBlur={() => setTimeout(() => setIsFocused(false), 150)}
               onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const matched = filteredCountryOptions.find((c) =>
+                    c.name
+                      .toLowerCase()
+                      .includes(newTopic.country.toLowerCase())
+                  );
+                  if (matched) {
+                    setNewTopic((prev) => ({
+                      ...prev,
+                      country: matched.name,
+                    }));
+                    setIsCountrySelectFocused(false);
+                  }
+                  e.preventDefault();
+                }
+              }}
             />
             <button
               className="clear-button"
@@ -202,13 +228,48 @@ const Topics = () => {
             placeholder="Topic title"
             onChange={handleChange}
           />
-          <input
-            type="text"
-            name="country"
-            value={newTopic.country}
-            placeholder="Country"
-            onChange={handleChange}
-          />
+          <div className="country-select-wrapper">
+            <input
+              type="text"
+              name="country"
+              placeholder="Country"
+              value={newTopic.country}
+              onChange={(e) => {
+                handleChange(e);
+                setIsCountrySelectFocused(true);
+              }}
+              onFocus={() => setIsCountrySelectFocused(true)}
+              onBlur={() =>
+                setTimeout(() => setIsCountrySelectFocused(false), 150)
+              }
+              autoComplete="off"
+            />
+
+            {isCountrySelectFocused && (
+              <ul className="country-dropdown">
+                {fiftyCountries
+                  .filter((c) =>
+                    c.name
+                      .toLowerCase()
+                      .includes(newTopic.country.toLowerCase())
+                  )
+                  .map((c) => (
+                    <li
+                      key={c.code}
+                      onClick={() => {
+                        setNewTopic((prev) => ({
+                          ...prev,
+                          country: c.name,
+                        }));
+                        setIsCountrySelectFocused(false);
+                      }}
+                    >
+                      {c.name}
+                    </li>
+                  ))}
+              </ul>
+            )}
+          </div>
           <input
             type="text"
             name="image"
