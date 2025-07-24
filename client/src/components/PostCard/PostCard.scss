@@ -45,6 +45,13 @@
     border-top: 1px solid #eee;
     padding-top: 8px;
     margin-top: auto;
+
+    .like {
+      &__likeCount {
+        padding: 10px;
+        cursor: pointer;
+      }
+    }
   }
 
   &__timestamp {
@@ -63,5 +70,40 @@
       border-radius: 8px;
       object-fit: cover;
     }
+  }
+}
+
+.liker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px;
+
+  &__item {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #f0f0f0;
+    }
+  }
+
+  &__name {
+    font-size: 0.95rem;
+    color: #333;
+    font-weight: 500;
+  }
+
+  &__avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #ddd;
   }
 }
