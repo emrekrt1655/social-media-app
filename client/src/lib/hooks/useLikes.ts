@@ -70,7 +70,10 @@ export function useLikeMutation() {
   const likePostMutation = useMutation({
     mutationFn: async (like: CreateLikePostData) => await likePost(like),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["postLikes", variables.likePostId] });
+      queryClient.invalidateQueries({
+        queryKey: ["postLikes", variables.likePostId],
+      });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
     onError: (error) => {
       console.error("Error creating like:", error);
@@ -80,8 +83,13 @@ export function useLikeMutation() {
   const likeCommentMutation = useMutation({
     mutationFn: async (like: CreateLikeCommentData) => await likeComment(like),
     onSuccess: (_, variables) => {
-        console.log("Mutation success! Invalidating query for:", variables.likeCommentId);
-      queryClient.invalidateQueries({ queryKey: ['commentLikes', variables.likeCommentId] });
+      console.log(
+        "Mutation success! Invalidating query for:",
+        variables.likeCommentId
+      );
+      queryClient.invalidateQueries({
+        queryKey: ["commentLikes", variables.likeCommentId],
+      });
     },
     onError: (error) => {
       console.error("Error creating like:", error);
@@ -89,11 +97,19 @@ export function useLikeMutation() {
   });
 
   const deleteLike = useMutation({
-    mutationFn: async (likeId: string) => await unlike(likeId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["postLikes"] });
-      queryClient.invalidateQueries({ queryKey: ["commentLikes"] });
+    mutationFn: async (variables: { likeId: string; likePostId: string }) =>
+      await unlike(variables.likeId),
+
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["postLikes", variables.likePostId],
+      });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({
+        queryKey: ["commentLikes", variables.likePostId],
+      });
     },
+
     onError: (error) => {
       console.error("Error deleting like:", error);
     },

@@ -9,7 +9,7 @@ import AvatarCard from "../Avatar/AvatarCard";
 import Modal from "../Modal/Modal";
 import { PiThumbsUpDuotone, PiThumbsUpFill } from "react-icons/pi";
 import { getUserFromStorage } from "../../utils/localStorage";
-import { useLikes } from "../../lib/hooks/useLikes";
+import { useLikes, useLikeMutation } from "../../lib/hooks/useLikes";
 import { useAuth } from "../../lib/hooks/useAuth";
 
 type PostCardProps = {
@@ -25,8 +25,10 @@ const PostCard: React.FC<PostCardProps> = ({ post, postUser, topic }) => {
   const users = useAuth().users;
 
   const { postLikes } = useLikes().getAllPostLikes(post.postId);
+  const { likePost, deleteLike } = useLikeMutation();
   const likersIdList = postLikes.map((like) => like.likeUserId);
   const isPostLikedByAuthUser = likersIdList.includes(authUser.userId);
+  console.log("list", likersIdList);
   const postLikers = likersIdList
     .map((id) => users?.find((user) => user.userId === id))
     .filter((user): user is AuthUserData => user !== undefined);
@@ -40,6 +42,17 @@ const PostCard: React.FC<PostCardProps> = ({ post, postUser, topic }) => {
     }
   };
 
+  const authUserLike = postLikes.find(
+    (like) => like.likeUserId === authUser.userId
+  );
+
+  const likeId = authUserLike?.likeId;
+
+  const handleLikeClick = () => {
+    !isPostLikedByAuthUser
+      ? likePost({ likeUserId: authUser.userId, likePostId: post.postId })
+      : likeId && deleteLike({ likeId, likePostId: post.postId });
+  };
   return (
     <>
       <div
@@ -65,17 +78,27 @@ const PostCard: React.FC<PostCardProps> = ({ post, postUser, topic }) => {
 
             <p className="post-card__text">{post.text}</p>
 
-            <div className="post-card__footer">
+            <div
+              className="post-card__footer"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
               <div className="like">
-                {!isPostLikedByAuthUser ? (
-                  <PiThumbsUpDuotone />
-                ) : (
-                  <PiThumbsUpFill />
-                )}
+                <span
+                  onClick={() => {
+                    handleLikeClick();
+                  }}
+                >
+                  {!isPostLikedByAuthUser ? (
+                    <PiThumbsUpDuotone />
+                  ) : (
+                    <PiThumbsUpFill />
+                  )}
+                </span>
                 <span
                   className="like__likeCount"
-                  onClick={(e) => {
-                    e.stopPropagation();
+                  onClick={() => {
                     setIsLikeModalOpen(true);
                   }}
                 >
@@ -97,7 +120,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, postUser, topic }) => {
           )}
         </div>
       </div>
-      {isLikeModalOpen && (
+      {isLikeModalOpen && post._count.likes >= 1 && (
         <Modal title="Likers" onClose={() => setIsLikeModalOpen(false)}>
           <div className="liker-list">
             {postLikers.map((user) => (

@@ -22,4 +22,4 @@ export const likeComment = (likeData: CreateLikeCommentData) =>
   apiRequest<LikeCreateResponse>("likeComment", "POST", likeData);
 
 export const unlike = (likeId: string) =>
-  apiRequest<LikeCreateResponse>(`/unlike/${likeId}`);
+  apiRequest<LikeCreateResponse>(`/unlike/${likeId}`, "DELETE");
