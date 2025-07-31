@@ -1,0 +1,46 @@
+.commentBox {
+  margin-top: 24px;
+  padding: 16px;
+  border-top: 1px solid #eaeaea;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #f9f9f9;
+    padding: 12px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    position: relative;
+  }
+
+  .avatar-card {
+    flex-shrink: 0;
+  }
+
+  span {
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  li::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 20px;
+    height: 1px;
+    width: calc(100% - 40px);
+    background-color: #ddd;
+  }
+}

@@ -11,15 +11,23 @@ import { PiThumbsUpDuotone, PiThumbsUpFill } from "react-icons/pi";
 import { getUserFromStorage } from "../../utils/localStorage";
 import { useLikes, useLikeMutation } from "../../lib/hooks/useLikes";
 import { useAuth } from "../../lib/hooks/useAuth";
+import CommentBox from "../Comment/CommentBox";
 
 type PostCardProps = {
   post: Post;
   postUser: AuthUserData;
   topic: Topic;
+  detailed?: boolean;
 };
 
-const PostCard: React.FC<PostCardProps> = ({ post, postUser, topic }) => {
+const PostCard: React.FC<PostCardProps> = ({
+  post,
+  postUser,
+  topic,
+  detailed,
+}) => {
   const [isLikeModalOpen, setIsLikeModalOpen] = useState(false);
+  const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(detailed ?? false);
   const navigate = useNavigate();
   const authUser: AuthUserData = getUserFromStorage();
   const users = useAuth().users;
@@ -28,7 +36,6 @@ const PostCard: React.FC<PostCardProps> = ({ post, postUser, topic }) => {
   const { likePost, deleteLike } = useLikeMutation();
   const likersIdList = postLikes.map((like) => like.likeUserId);
   const isPostLikedByAuthUser = likersIdList.includes(authUser.userId);
-  console.log("list", likersIdList);
   const postLikers = likersIdList
     .map((id) => users?.find((user) => user.userId === id))
     .filter((user): user is AuthUserData => user !== undefined);
@@ -67,10 +74,23 @@ const PostCard: React.FC<PostCardProps> = ({ post, postUser, topic }) => {
                 style={{ cursor: topic ? "pointer" : "default" }}
                 onClick={handleTopicClick}
               >
-                {topic.text.length > 15
-                  ? topic.text.slice(0, 15) + "..."
-                  : topic.text}{" "}
-                / {topic.category}
+                {detailed ? (
+                  <>
+                    <span className="post-card__topic-text">
+                      {topic.text} /
+                    </span>
+                    <br />
+                    <span className="post-card__topic-category">
+                      {topic.category}
+                    </span>
+                  </>
+                ) : (
+                  `${
+                    topic.text.length > 15
+                      ? topic.text.slice(0, 15) + "..."
+                      : topic.text
+                  } / ${topic.category}`
+                )}
               </p>
 
               <AvatarCard user={postUser} />
@@ -106,7 +126,9 @@ const PostCard: React.FC<PostCardProps> = ({ post, postUser, topic }) => {
                 </span>
               </div>
 
-              <span>💬 {post._count.comments}</span>
+              <span onClick={() => setIsCommentBoxOpen(!isCommentBoxOpen)}>
+                💬 {post._count.comments}
+              </span>
               <span className="post-card__timestamp">
                 {formatPostDate(post.createdAt)}
               </span>
@@ -119,6 +141,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, postUser, topic }) => {
             </div>
           )}
         </div>
+        {isCommentBoxOpen && <CommentBox postId={post.postId} />}{" "}
       </div>
       {isLikeModalOpen && post._count.likes >= 1 && (
         <Modal title="Likers" onClose={() => setIsLikeModalOpen(false)}>
