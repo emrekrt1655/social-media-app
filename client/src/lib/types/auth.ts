@@ -42,7 +42,6 @@ export type AuthUserData = {
   bio?: string;
   email: string;
   avatar?: string;
-  password?: string;
   isTopicCreator?: string;
   isVerified?: string;
 };
