@@ -1,10 +1,11 @@
 export type Comment = CommentCreateData & {
   category?: string;
   isElite?: string;
+  createdAt?: string;
 };
 
 export type CommentCreateData = {
-  commentId: string;
+  commentId?: string;
   text: string;
   commentPostId: string;
   commentUserId: string;
@@ -17,7 +18,7 @@ export type CommentCreationResponse = {
 export type CommentDeleteResponse = CommentCreationResponse & {};
 
 export type CommentsResponse = {
-    status: string,
-    message: string,
-    data: Comment[]
-}
+  status: string;
+  message: string;
+  data: Comment[];
+};

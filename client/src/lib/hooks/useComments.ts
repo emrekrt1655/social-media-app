@@ -34,6 +34,7 @@ export function useCommentMutations(postId: string) {
       await createComment(newComment),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", postId] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
     onError: (error) => {
       console.error("Error creating comment:", error);
@@ -44,6 +45,7 @@ export function useCommentMutations(postId: string) {
     mutationFn: async (commentId: string) => await deleteComment(commentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", postId] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
     onError: (error) => {
       console.error("Error deleting comment:", error);

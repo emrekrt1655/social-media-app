@@ -126,7 +126,11 @@ const PostCard: React.FC<PostCardProps> = ({
                 </span>
               </div>
 
-              <span onClick={() => setIsCommentBoxOpen(!isCommentBoxOpen)}>
+              <span
+                onClick={() =>
+                  !detailed && setIsCommentBoxOpen(!isCommentBoxOpen)
+                }
+              >
                 💬 {post._count.comments}
               </span>
               <span className="post-card__timestamp">
@@ -141,7 +145,9 @@ const PostCard: React.FC<PostCardProps> = ({
             </div>
           )}
         </div>
-        {isCommentBoxOpen && <CommentBox postId={post.postId} />}{" "}
+        {isCommentBoxOpen && (
+          <CommentBox detailed={detailed} postId={post.postId} />
+        )}{" "}
       </div>
       {isLikeModalOpen && post._count.likes >= 1 && (
         <Modal title="Likers" onClose={() => setIsLikeModalOpen(false)}>

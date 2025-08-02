@@ -12,7 +12,7 @@ export const getComments = (postId: string) =>
 
 //create a new comment
 export const createComment = (comment: CommentCreateData) =>
-  apiRequest<CommentCreationResponse>("commentCreate", "POST", comment);
+  apiRequest<CommentCreationResponse>("/commentCreate", "POST", comment);
 
 //delete a comment
 export const deleteComment = (commentId: string) =>

@@ -1,0 +1,55 @@
+.new-comment {
+  margin-top: 16px;
+  width: 100%;
+
+  &__input-wrapper {
+    display: flex;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f4f4f4;
+
+    &:focus-within {
+      border-color: #195d49;
+      background-color: #fff;
+    }
+  }
+
+  &__input {
+    flex: 1;
+    resize: none;
+    padding: 10px;
+    border: none;
+    border-radius: 8px 0 0 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    outline: none;
+    background-color: transparent;
+    color: #000;
+    min-height: 60px;
+  }
+
+  &__button {
+    width: 50px;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    background-color: #195d49;
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background-color: #195d49;
+    }
+
+    &:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+  }
+}
