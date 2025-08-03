@@ -27,6 +27,12 @@ app.use("/api", routes.postRoutes);
 app.use("/api", routes.commentRoutes);
 app.use("/api", routes.likeRoutes);
 app.use("/api", routes.followerRoutes);
+app.use(
+  cors({
+    origin: "http://localhost:5173", // frontend URL
+    credentials: true,
+  })
+);
 
 // Socket.io
 const http = createServer(app);

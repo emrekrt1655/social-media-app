@@ -7,7 +7,7 @@ import {
 } from "../types/follower";
 
 //Fetches all followers  from the backend.
-export const getFollowers = () => apiRequest<FollowersResponse>("/followes");
+export const getFollowers = () => apiRequest<FollowersResponse>("/followers");
 
 //Create a new follower
 export const createFollower = (follower: CreateFollowerData) =>

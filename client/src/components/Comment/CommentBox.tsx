@@ -64,7 +64,7 @@ const CommentBox: React.FC<CommentBoxProps> = ({ postId, detailed }) => {
                 <p className="commentBox__date">
                   {formatPostDate(comment.createdAt as string)}
                 </p>
-                {authUser.userId === commentUser.userId && (
+                {authUser &&  authUser.userId === commentUser.userId && (
                   <MdDeleteForever
                     onClick={() => deleteComment(comment.commentId as string)}
                   />

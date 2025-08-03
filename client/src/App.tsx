@@ -16,6 +16,8 @@ type Props = {
 import "./App.scss";
 import TopicPosts from "./pages/posts/TopicPosts";
 import UserProfile from "./pages/userProfile/UserProfile";
+import { useEffect } from "react";
+import { useRefreshToken } from "./utils/hooks/useRefreshToken";
 
 function AppRoutes({ user, accessToken }: Props) {
   return (
@@ -73,6 +75,24 @@ function AppRoutes({ user, accessToken }: Props) {
 
 function App() {
   const { user, accessToken } = useAuthContext();
+
+  const refresh = useRefreshToken();
+
+  useEffect(() => {
+    const checkAndRefresh = async () => {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        try {
+          const data = await refresh();
+          console.log("Refreshed token and user:", data);
+        } catch (err) {
+          console.log("User not logged in or session expired");
+        }
+      }
+    };
+
+    checkAndRefresh();
+  }, []);
 
   return (
     <BrowserRouter>

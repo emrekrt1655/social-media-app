@@ -25,6 +25,7 @@ const apiRequest = async <T>(
         ...getAuthHeaders(),
       },
       body: body ? JSON.stringify(body) : undefined,
+      //credentials: "include",
     });
 
     if (!response.ok) {

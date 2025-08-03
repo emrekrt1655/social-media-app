@@ -36,7 +36,12 @@ export function useAuth() {
   // Refresh Token Query
   const { data: refreshData } = useQuery<RefreshTokenResponse>({
     queryKey: ["refreshToken"],
-    queryFn: refreshToken,
+    queryFn: async () => {
+      const data = await refreshToken();
+      saveToken(data.access_token);
+      setUserToStorage(data.user);
+      return data;
+    },
     retry: false,
     enabled: false,
   });
@@ -86,6 +91,7 @@ export function useAuthMutation() {
       setUserToStorage(data.user)
       setAccessToken(data.access_token);
       setUser(data.user);
+      localStorage.setItem("refresh", "soureSachen");
       navigate("/");
     },
     onError: (error) => {

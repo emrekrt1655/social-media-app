@@ -7,8 +7,6 @@ import type {
   SignupData,
   SignupResponse,
   UpdateUserResponse,
-  UserData,
-  UserDataResponse,
 } from "../types/auth";
 
 // register
