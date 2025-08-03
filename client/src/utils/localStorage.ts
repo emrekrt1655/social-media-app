@@ -10,6 +10,10 @@ export const removeToken = () => {
   localStorage.removeItem('accessToken');
 };
 
+export const removeUser = () => {
+  localStorage.removeItem('user')
+}
+
 const USER_KEY = "user";
 
 export const setUserToStorage = (user: any) => {

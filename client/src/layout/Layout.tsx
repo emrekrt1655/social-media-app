@@ -4,20 +4,22 @@ import "./Layout.scss";
 import MostLikedPost from "../components/Sidebar/Right/MostLikedPost/MostLikedPost";
 import Footer from "../components/Sidebar/Right/Footer/Footer";
 import ProfileCard from "../components/Sidebar/Left/ProfileCard/ProfileCard";
+import { getUserFromStorage } from "../utils/localStorage";
 
 type Props = {
   children: ReactNode;
 };
 
 function MainLayout({ children }: Props) {
+  const authUser = getUserFromStorage()
   return (
     <div className="main-container">
-      <aside className="sidebar-left">
+     { authUser &&  <aside className="sidebar-left">
         <section className="top">
-          <ProfileCard />{" "}
+          <ProfileCard /> 
         </section>
         <section className="bottom">bottom</section>
-      </aside>
+      </aside> }
 
       <main className="page-content">{children}</main>
 

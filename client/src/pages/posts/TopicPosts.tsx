@@ -25,6 +25,7 @@ const TopicPosts = () => {
     <>
       {topicPosts?.map((post: Post) => (
         <PostCard
+          key={post.postId}
           post={post}
           postUser={userMap[post.postUserId]}
           topic={topic!}

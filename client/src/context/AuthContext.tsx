@@ -10,6 +10,7 @@ import {
   getToken,
   getUserFromStorage,
   removeToken,
+  removeUser,
 } from "../utils/localStorage";
 
 interface AuthContextType {
@@ -37,6 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     removeToken();
+    removeUser();
     setAccessToken(null);
     setUser(null);
   };

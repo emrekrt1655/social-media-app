@@ -41,7 +41,7 @@ const CommentBox: React.FC<CommentBoxProps> = ({ postId, detailed }) => {
         </span>
       )}
 
-      {openNewComment && (
+      {openNewComment && authUser && (
         <NewComment postId={postId} authUserId={authUser.userId} />
       )}
 

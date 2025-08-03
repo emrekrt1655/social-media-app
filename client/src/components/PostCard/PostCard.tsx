@@ -35,7 +35,8 @@ const PostCard: React.FC<PostCardProps> = ({
   const { postLikes } = useLikes().getAllPostLikes(post.postId);
   const { likePost, deleteLike } = useLikeMutation();
   const likersIdList = postLikes.map((like) => like.likeUserId);
-  const isPostLikedByAuthUser = likersIdList.includes(authUser.userId);
+  const isPostLikedByAuthUser =
+    authUser && likersIdList.includes(authUser.userId);
   const postLikers = likersIdList
     .map((id) => users?.find((user) => user.userId === id))
     .filter((user): user is AuthUserData => user !== undefined);
@@ -49,9 +50,8 @@ const PostCard: React.FC<PostCardProps> = ({
     }
   };
 
-  const authUserLike = postLikes.find(
-    (like) => like.likeUserId === authUser.userId
-  );
+  const authUserLike =
+    authUser && postLikes.find((like) => like.likeUserId === authUser.userId);
 
   const likeId = authUserLike?.likeId;
 
@@ -74,7 +74,7 @@ const PostCard: React.FC<PostCardProps> = ({
                 style={{ cursor: topic ? "pointer" : "default" }}
                 onClick={handleTopicClick}
               >
-                {detailed ? (
+                {detailed && topic ?  (
                   <>
                     <span className="post-card__topic-text">
                       {topic.text} /
