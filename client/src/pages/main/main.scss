@@ -1,0 +1,26 @@
+.newPost-button {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.75rem 1.5rem;
+  background-color: #195d49;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #021912;
+  }
+
+  &:active {
+    transform: translateX(-50%) scale(0.98);
+  }
+}

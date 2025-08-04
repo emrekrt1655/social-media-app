@@ -11,7 +11,7 @@ export type PostCreateData = {
   text: string;
   postUserId: string;
   postTopicId: string;
-  image: string;
+  image?: string;
 };
 
 export type Count = {

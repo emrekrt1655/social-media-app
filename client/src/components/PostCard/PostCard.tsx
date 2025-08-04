@@ -74,7 +74,7 @@ const PostCard: React.FC<PostCardProps> = ({
                 style={{ cursor: topic ? "pointer" : "default" }}
                 onClick={handleTopicClick}
               >
-                {detailed && topic ?  (
+                {detailed && topic ? (
                   <>
                     <span className="post-card__topic-text">
                       {topic.text} /
@@ -86,10 +86,10 @@ const PostCard: React.FC<PostCardProps> = ({
                   </>
                 ) : (
                   `${
-                    topic.text.length > 15
+                    topic && topic.text.length > 15
                       ? topic.text.slice(0, 15) + "..."
-                      : topic.text
-                  } / ${topic.category}`
+                      : topic && topic.text
+                  } / ${topic && topic.category}`
                 )}
               </p>
 

@@ -1,6 +1,6 @@
 import "./Main.scss";
-import { usePosts } from "../../lib/hooks/usePost";
-import { Post } from "../../lib/types/posts";
+import { usePostMutations, usePosts } from "../../lib/hooks/usePost";
+import { Post, PostCreateData } from "../../lib/types/posts";
 import { useState } from "react";
 import PostCard from "../../components/PostCard/PostCard";
 import { useAuth } from "../../lib/hooks/useAuth";
@@ -10,6 +10,8 @@ import { Topic } from "../../lib/types/topics";
 import ToggleTabs from "../../components/ToggleTabs/ToggleTabs";
 import { getUserFromStorage } from "../../utils/localStorage";
 import { useFollowers } from "../../lib/hooks/useFollowers";
+import Modal from "../../components/Modal/Modal";
+import NewPostForm from "../../components/NewPostForm/NewPostForm";
 
 const Main = () => {
   const { posts } = usePosts();
@@ -17,10 +19,17 @@ const Main = () => {
   const { topics } = useTopics();
   const authUser: AuthUserData = getUserFromStorage();
   const { followers } = useFollowers();
+  const [isOpenNewPostModal, setIsOpenNewPostModal] = useState(false);
+  const createPost = authUser
+    ? usePostMutations(authUser.userId).createPost
+    : null;
+  const [formData, setFormData] = useState<PostCreateData | null>(null);
 
-  const authUserFollowers = authUser && followers
-    .filter((follower) => follower.followerId === authUser.userId)
-    .map((user) => user.followedId);
+  const authUserFollowers =
+    authUser &&
+    followers
+      .filter((follower) => follower.followerId === authUser.userId)
+      .map((user) => user.followedId);
 
   const [activeTab, setActiveTab] = useState<"foryou" | "followings" | "all">(
     authUser ? "foryou" : "all"
@@ -38,22 +47,23 @@ const Main = () => {
       return acc;
     }, {} as Record<string, Topic>) || {};
 
-  let postsList: Post[] = [];
-
+  let postsList: Post[] = [...posts].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
   switch (activeTab) {
     case "all":
-      postsList = posts;
+      postsList = [...postsList];
       break;
     case "followings":
-      postsList = posts.filter((post) =>
+      postsList = postsList.filter((post) =>
         authUserFollowers.includes(post.postUserId)
       );
       break;
     case "foryou":
-      postsList = posts;
+      postsList = [...postsList];
       break;
     default:
-      postsList = posts;
+      postsList = [...postsList];
       break;
   }
 
@@ -80,6 +90,38 @@ const Main = () => {
           topic={topicMap[post.postTopicId]}
         />
       ))}
+      {authUser && (
+        <button
+          className="newPost-button"
+          onClick={() => setIsOpenNewPostModal(true)}
+        >
+          {" "}
+          Add Something...{" "}
+        </button>
+      )}
+      {isOpenNewPostModal && (
+        <Modal
+          title="Add new Something"
+          onClose={() => setIsOpenNewPostModal(false)}
+          onSubmit={() => {
+            if (formData && createPost) {
+              createPost(formData, {
+                onSuccess: () => {
+                  setIsOpenNewPostModal(false);
+                },
+              });
+            }
+          }}
+        >
+          <NewPostForm
+            topics={topics}
+            authUser={authUser}
+            onChange={(data) => {
+              setFormData(data);
+            }}
+          />
+        </Modal>
+      )}
     </>
   );
 };
