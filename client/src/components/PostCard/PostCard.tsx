@@ -18,6 +18,7 @@ type PostCardProps = {
   postUser: AuthUserData;
   topic: Topic;
   detailed?: boolean;
+  mostLiked?: boolean;
 };
 
 const PostCard: React.FC<PostCardProps> = ({
@@ -25,6 +26,7 @@ const PostCard: React.FC<PostCardProps> = ({
   postUser,
   topic,
   detailed,
+  mostLiked,
 }) => {
   const [isLikeModalOpen, setIsLikeModalOpen] = useState(false);
   const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(detailed ?? false);
@@ -145,9 +147,10 @@ const PostCard: React.FC<PostCardProps> = ({
             </div>
           )}
         </div>
-        {isCommentBoxOpen && (
-          <CommentBox detailed={detailed} postId={post.postId} />
-        )}{" "}
+        {!mostLiked &&
+          (detailed || (isCommentBoxOpen && post._count.comments > 0)) && (
+            <CommentBox detailed={detailed} postId={post.postId} />
+          )}
       </div>
       {isLikeModalOpen && post._count.likes >= 1 && (
         <Modal title="Likers" onClose={() => setIsLikeModalOpen(false)}>
