@@ -1,35 +1,43 @@
-import "./Main.scss";
+import { useEffect, useMemo, useState } from "react";
 import { usePostMutations, usePosts } from "../../lib/hooks/usePost";
 import { Post, PostCreateData } from "../../lib/types/posts";
-import { useState } from "react";
 import PostCard from "../../components/PostCard/PostCard";
 import { useAuth } from "../../lib/hooks/useAuth";
-import { AuthUserData } from "../../lib/types/auth";
 import { useTopics } from "../../lib/hooks/useTopics";
+import { useFollowers } from "../../lib/hooks/useFollowers";
+import { AuthUserData } from "../../lib/types/auth";
 import { Topic } from "../../lib/types/topics";
 import ToggleTabs from "../../components/ToggleTabs/ToggleTabs";
-import { getUserFromStorage } from "../../utils/localStorage";
-import { useFollowers } from "../../lib/hooks/useFollowers";
 import Modal from "../../components/Modal/Modal";
 import NewPostForm from "../../components/NewPostForm/NewPostForm";
+import { getUserFromStorage } from "../../utils/localStorage";
+import { getForYouPosts } from "../../utils/getForYouPosts";
+import "./Main.scss";
 
 const Main = () => {
+  const [formData, setFormData] = useState<PostCreateData | null>(null);
   const { posts } = usePosts();
   const { users } = useAuth();
   const { topics } = useTopics();
-  const authUser: AuthUserData = getUserFromStorage();
   const { followers } = useFollowers();
+  const authUser: AuthUserData = getUserFromStorage();
   const [isOpenNewPostModal, setIsOpenNewPostModal] = useState(false);
-  const createPost = authUser
-    ? usePostMutations(authUser.userId).createPost
-    : null;
-  const [formData, setFormData] = useState<PostCreateData | null>(null);
+  const postMutations = usePostMutations(authUser?.userId ?? "");
+  const createPost = authUser ? postMutations.createPost : null;
 
-  const authUserFollowers =
-    authUser &&
-    followers
-      .filter((follower) => follower.followerId === authUser.userId)
-      .map((user) => user.followedId);
+  const memoizedForYouData = useMemo(() => {
+    if (!authUser || !posts || !followers) {
+      return { forYouPosts: [], directFollowings: [] };
+    }
+
+    return getForYouPosts({ posts, authUser, followers });
+  }, [posts, authUser, followers]);
+
+  const { forYouPosts, directFollowings } = memoizedForYouData;
+
+  let postsList: Post[] = posts.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 
   const [activeTab, setActiveTab] = useState<"foryou" | "followings" | "all">(
     authUser ? "foryou" : "all"
@@ -47,26 +55,26 @@ const Main = () => {
       return acc;
     }, {} as Record<string, Topic>) || {};
 
-  let postsList: Post[] = [...posts].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
   switch (activeTab) {
     case "all":
       postsList = [...postsList];
       break;
     case "followings":
-      postsList = postsList.filter((post) =>
-        authUserFollowers.includes(post.postUserId)
-      );
+      postsList = [...directFollowings];
       break;
     case "foryou":
-      postsList = [...postsList];
+      postsList = [...forYouPosts];
       break;
     default:
       postsList = [...postsList];
       break;
   }
 
+  useEffect(() => {
+    if (!authUser) {
+      setActiveTab("all");
+    }
+  }, [authUser]);
   return (
     <>
       <ToggleTabs
