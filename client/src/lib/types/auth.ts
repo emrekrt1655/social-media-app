@@ -51,3 +51,9 @@ export type ChangePasswordData = {
   oldPassword: string;
   password: string;
 };
+
+export type ExtendedUserWithFollowInfo = AuthUserData & {
+  followerId?: string;
+  followedId?: string;
+  folId: string;
+};

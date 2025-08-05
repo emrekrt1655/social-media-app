@@ -12,6 +12,7 @@ import { getUserFromStorage } from "../../utils/localStorage";
 import { useLikes, useLikeMutation } from "../../lib/hooks/useLikes";
 import { useAuth } from "../../lib/hooks/useAuth";
 import CommentBox from "../Comment/CommentBox";
+import UserList from "../UserList/UserList";
 
 type PostCardProps = {
   post: Post;
@@ -154,27 +155,11 @@ const PostCard: React.FC<PostCardProps> = ({
       </div>
       {isLikeModalOpen && post._count.likes >= 1 && (
         <Modal title="Likers" onClose={() => setIsLikeModalOpen(false)}>
-          <div className="liker-list">
-            {postLikers.map((user) => (
-              <div
-                onClick={() => {
-                  navigate(`/profile/${user.userId}/${user.userName}`);
-                  setIsLikeModalOpen(false);
-                }}
-                key={user.userId}
-                className="liker-list__item"
-              >
-                <span className="liker-list__name">
-                  {user.name} {user.surname}
-                </span>
-                <img
-                  src={user.avatar}
-                  alt={`${user.name}'s avatar`}
-                  className="liker-list__avatar"
-                />
-              </div>
-            ))}
-          </div>
+          <UserList
+            userList={postLikers}
+            onclose={() => setIsLikeModalOpen(false)}
+            likeModal
+          />
         </Modal>
       )}
     </>

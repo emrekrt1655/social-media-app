@@ -62,4 +62,46 @@
     font-style: italic;
     text-align: center;
   }
+
+  &__follow-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+    justify-content: center;
+    user-select: none;
+  }
+
+  &__follow-stats-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  &__follow-stats-item:hover {
+    color: #007bff;
+    text-decoration: underline;
+  }
+
+  &__follow-stats-count {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &__follow-stats-label {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.15rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 400px) {
+    &__follow-stats {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
 }
