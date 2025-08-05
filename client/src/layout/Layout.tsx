@@ -5,21 +5,26 @@ import MostLikedPost from "../components/Sidebar/Right/MostLikedPost/MostLikedPo
 import Footer from "../components/Sidebar/Right/Footer/Footer";
 import ProfileCard from "../components/Sidebar/Left/ProfileCard/ProfileCard";
 import { getUserFromStorage } from "../utils/localStorage";
+import WhoToFollow from "../components/WhoToFollow/WhoToFollow";
 
 type Props = {
   children: ReactNode;
 };
 
 function MainLayout({ children }: Props) {
-  const authUser = getUserFromStorage()
+  const authUser = getUserFromStorage();
   return (
     <div className="main-container">
-     { authUser &&  <aside className="sidebar-left">
-        <section className="top">
-          <ProfileCard /> 
-        </section>
-        <section className="bottom">bottom</section>
-      </aside> }
+      {authUser && (
+        <aside className="sidebar-left">
+          <section className="top">
+            <ProfileCard />
+          </section>
+          <section className="bottom">
+            <WhoToFollow />
+          </section>
+        </aside>
+      )}
 
       <main className="page-content">{children}</main>
 

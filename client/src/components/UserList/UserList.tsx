@@ -27,7 +27,7 @@ const UserList: React.FC<UserListProps> = ({
       {userList.map((user, index) => {
         const isOwnProfile = authUser?.userId === user.userId;
 
-        const isFollowing = authUserFollowings.includes(user.userId); // ✅ doğru kontrol
+        const isFollowing = authUserFollowings.includes(user.userId);
 
         const handleFollow = () => {
           if (authUser) {

@@ -11,6 +11,7 @@ import { useFollowers } from "../../../../lib/hooks/useFollowers";
 import Modal from "../../../Modal/Modal";
 import UserList from "../../../UserList/UserList";
 import { getExtendedUsers } from "../../../../utils/getExtendedUsers";
+import { getAuthUserFollowings } from "../../../../utils/getAuthUserFollowings";
 
 const ProfileCard = () => {
   const { userId } = useParams<{ userId: string }>();
@@ -31,14 +32,12 @@ const ProfileCard = () => {
     );
   }
 
-  const [authUser] = useState(() => getUserFromStorage()); // useMemo yerine useState
+  const [authUser] = useState(() => getUserFromStorage()); 
 
   const [authUserFollowings, setAuthUserFollowings] = useState<string[]>([]);
 
   useEffect(() => {
-    const newFollowings = followers
-      .filter((f) => f.followerId === authUser.userId)
-      .map((f) => f.followedId);
+    const newFollowings = getAuthUserFollowings(followers, authUser.userId);
 
     setAuthUserFollowings((prev) => {
       if (JSON.stringify(prev) === JSON.stringify(newFollowings)) {
